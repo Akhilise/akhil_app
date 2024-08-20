@@ -3,6 +3,8 @@
 import 'package:akhil_app/pages/home_page.dart';
 import 'package:flutter/material.dart';
 
+import 'pages/login_page.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -18,7 +20,6 @@ class MyApp extends StatelessWidget {
           foregroundColor: Colors.white,
         ),
       ),
-      home: HomePage(),
       themeMode: ThemeMode.light,
       darkTheme: ThemeData(
         brightness: Brightness.dark,
@@ -27,6 +28,14 @@ class MyApp extends StatelessWidget {
           foregroundColor: Colors.white,
         ),
       ),
+      initialRoute: '/home',
+      routes: {
+        '/': (context) => LoginPage(),
+        '/home': (context) => HomePage(),
+        '/login': (context) => LoginPage(),
+      },
     );
   }
+
+  String get newMethod => '/home';
 }
