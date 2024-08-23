@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, sort_child_properties_last
+// ignore_for_file: prefer_const_constructors, sort_child_properties_last, avoid_print
 
 import 'package:flutter/material.dart';
 
