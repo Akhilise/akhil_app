@@ -1,10 +1,11 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors
 
 import 'package:akhil_app/pages/home_page.dart';
+import 'package:akhil_app/pages/signin_page.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'pages/login_page.dart';
+import 'utils/routes.dart';
 
 void main() {
   runApp(MyApp());
@@ -16,7 +17,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'My App',
       theme: ThemeData(
-        fontFamily: GoogleFonts.laila().fontFamily,
         appBarTheme: AppBarTheme(
           backgroundColor: Colors.purple,
           foregroundColor: Colors.white,
@@ -30,14 +30,13 @@ class MyApp extends StatelessWidget {
           foregroundColor: Colors.white,
         ),
       ),
-      initialRoute: '/home',
+      initialRoute: '/sign',
       routes: {
         '/': (context) => LoginPage(),
-        '/home': (context) => HomePage(),
-        '/login': (context) => LoginPage(),
+        MyRoutes.homeRoute: (context) => HomePage(),
+        MyRoutes.loginRoute: (context) => LoginPage(),
+        MyRoutes.signRoute: (context) => SigninPage(),
       },
     );
   }
-
-  String get newMethod => '/home';
 }
