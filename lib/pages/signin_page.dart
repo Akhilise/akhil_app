@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:akhil_app/utils/routes.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SigninPage extends StatefulWidget {
@@ -14,6 +15,8 @@ class _SigninPageState extends State<SigninPage> {
   final _formKey = GlobalKey<FormState>();
   String _username = '';
   String _password = '';
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +43,8 @@ class _SigninPageState extends State<SigninPage> {
               ),
               TextFormField(
                 decoration: InputDecoration(
-                  hintText: 'Enter Username', labelText: 'USERNAME',
+                  hintText: 'Enter Username',
+                  labelText: 'USERNAME',
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
@@ -56,7 +60,8 @@ class _SigninPageState extends State<SigninPage> {
               ),
               TextFormField(
                 decoration: InputDecoration(
-                  hintText: 'Enter Password', labelText: 'PASSWORD',
+                  hintText: 'Enter Password',
+                  labelText: 'PASSWORD',
                   border: OutlineInputBorder(),
                 ),
                 obscureText: true,
@@ -73,12 +78,26 @@ class _SigninPageState extends State<SigninPage> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    //TODO: Add your sign in logic here
-                    print('Username: $_username, Password: $_password');
-                    Navigator.pushNamed(context, MyRoutes.loginRoute);
-                  }
+                  () async {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      try {
+                        UserCredential userCredential =
+                            await _auth.signInWithEmailAndPassword(
+                          email: _username,
+                          password: _password,
+                        );
+                        print('Signed in: ${userCredential.user!.uid}');
+                        Navigator.pushNamed(context, MyRoutes.loginRoute);
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'user-not-found') {
+                          print('No user found for that email.');
+                        } else if (e.code == 'wrong-password') {
+                          print('Wrong password provided for that user.');
+                        }
+                      }
+                    }
+                  };
                 },
                 child: Text('Sign In'),
               ),
